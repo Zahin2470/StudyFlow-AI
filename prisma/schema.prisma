@@ -1,0 +1,82 @@
+// Phase 1 subset: auth-only models. Academic entities (Semester, Course,
+// Assignment, Exam, Note, Document, GradeEntry, StudySession, StudyGroup...)
+// are added in Phase 2 per ARCHITECTURE.md — not stubbed here on purpose.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum AcademicLevel {
+  HIGH_SCHOOL
+  UNDERGRADUATE
+  GRADUATE
+}
+
+model User {
+  id             String    @id @default(cuid())
+  name           String
+  email          String    @unique
+  emailVerified  DateTime?
+  passwordHash   String?   // null when the user only signed up via OAuth
+  image          String?
+  role           Role      @default(STUDENT)
+
+  institution    String?
+  academicLevel  AcademicLevel?
+  onboardedAt    DateTime?
+
+  accounts       Account[]
+  sessions       Session[]
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+// Standard Auth.js (NextAuth) adapter models below.
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Shared by email verification and password reset — `purpose` distinguishes them.
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  purpose    String   // "email-verify" | "password-reset"
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+  }
+  h1, h2, h3 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  /* Hairline-border card — the default surface treatment. Shadow is reserved
+     for the dashboard hero card and modals only (see ARCHITECTURE.md §7),
+     so elevation still means something instead of every card looking the same. */
+  .card-flat {
+    @apply rounded-card border border-slate-light bg-white;
+  }
+  .card-elevated {
+    @apply rounded-card bg-white shadow-[0_8px_24px_rgba(20,33,60,0.08)];
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-card bg-indigo px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-hover;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-card border border-slate-light bg-white px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-paper;
+  }
+  .input-field {
+    @apply w-full rounded-card border border-slate-light bg-white px-4 py-2.5 text-sm text-ink placeholder:text-slate focus:outline-none focus:ring-2 focus:ring-indigo/40;
+  }
+}
