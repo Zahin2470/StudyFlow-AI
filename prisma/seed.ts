@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 async function main() {
   const passwordHash = await bcrypt.hash("Password123", 12);
 
-  await prisma.user.upsert({
+  const user = await prisma.user.upsert({
     where: { email: "demo@studyflow.ai" },
     update: {},
     create: {
@@ -22,7 +22,84 @@ async function main() {
     },
   });
 
-  console.log("Seeded demo@studyflow.ai / Password123");
+  const semester = await prisma.semester.create({
+    data: {
+      userId: user.id,
+      name: "Fall 2026",
+      startDate: new Date("2026-09-01"),
+      endDate: new Date("2026-12-20"),
+      isActive: true,
+    },
+  });
+
+  const [database, algorithms] = await Promise.all([
+    prisma.course.create({
+      data: {
+        userId: user.id,
+        semesterId: semester.id,
+        code: "CSE311",
+        name: "Database Systems",
+        instructor: "Dr. Rahman",
+        credits: 3,
+        color: "#3454D1",
+      },
+    }),
+    prisma.course.create({
+      data: {
+        userId: user.id,
+        semesterId: semester.id,
+        code: "CSE221",
+        name: "Algorithms",
+        instructor: "Dr. Chowdhury",
+        credits: 3,
+        color: "#5B8266",
+      },
+    }),
+  ]);
+
+  await prisma.assignment.createMany({
+    data: [
+      {
+        courseId: database.id,
+        title: "ER Diagram Assignment",
+        dueDate: new Date("2026-09-15"),
+        status: "IN_PROGRESS",
+        priority: "HIGH",
+        weight: 10,
+      },
+      {
+        courseId: algorithms.id,
+        title: "Dynamic Programming Problem Set",
+        dueDate: new Date("2026-09-20"),
+        status: "NOT_STARTED",
+        priority: "MEDIUM",
+        weight: 8,
+      },
+    ],
+  });
+
+  await prisma.exam.create({
+    data: {
+      courseId: database.id,
+      title: "Midterm",
+      examDate: new Date("2026-10-10"),
+      location: "Room 402",
+      weight: 25,
+    },
+  });
+
+  await prisma.studySession.create({
+    data: {
+      userId: user.id,
+      courseId: database.id,
+      title: "Review normalization",
+      scheduledStart: new Date("2026-09-14T18:00:00"),
+      scheduledEnd: new Date("2026-09-14T19:30:00"),
+      completed: false,
+    },
+  });
+
+  console.log("Seeded demo@studyflow.ai / Password123 with a sample semester, 2 courses, an assignment set, an exam, and a study session.");
 }
 
 main()

@@ -125,7 +125,7 @@ Chosen deliberately against the two clichés this brief could easily fall into �
 - **Palette** — `ink` `#14213C` (primary text/dark surfaces), `paper` `#F7F7F5` (cool off-white background, not cream), `indigo` `#3454D1` (primary accent — actions, links, focus states), `amber` `#E8A33D` (used sparingly — streaks, due-soon states, never as a second primary color), `sage` `#5B8266` (completed/success), `slate` `#A9AFBC` (borders, muted text).
 - **Type** — *Fraunces* (variable serif) for headlines and the landing page — gives "academic" real personality instead of a stock serif; *Manrope* for UI/body — calm, geometric, avoids the extremely default feel of shipping Inter untouched.
 - **Layout** — left-aligned, generous whitespace, sidebar-based app shell. Most cards use a **1px `slate` hairline border, not a drop shadow** — shadows are reserved for the dashboard's "Today's Focus" hero card and modals only, so elevation actually means something instead of every card looking identical.
-- **Motion** — one deliberate reveal on dashboard load (today's tasks stagger in once), otherwise static; no fade-slide-up on every section.
+- **Motion** — motion is a first-class part of this product's premium feel, not a garnish, so it gets a real library: **Framer Motion**, added as a dependency starting Phase 2 (added to `package.json` now so Phase 3 can use it immediately). Rules to keep it premium instead of noisy: spend the boldness on a small number of signature moments (the dashboard's "Today's Focus" stagger-in on load, a study-timer ring that actually animates progress, a satisfying check-off/complete transition on tasks) rather than a hover-and-fade on every card; everything else stays fast and quiet (150–250ms, standard easing). Respect `prefers-reduced-motion`. Motion answers something the user did or something that changed — it doesn't run just to look busy.
 
 ## 8. Security Risks & Mitigations
 
@@ -163,3 +163,15 @@ Unchanged from the brief (section 68) — Phase 1: setup + auth (this delivery).
 - `.env.example`, seed script stub, README with setup instructions.
 
 Nothing in Phases 2–11 is stubbed with fake data per section 70 — those screens simply don't exist yet in this delivery.
+
+## 13. Phase 2 — Delivered
+
+- Prisma schema extended: `Semester`, `Course`, `Assignment`, `Exam`, `StudySession`, with the relationships from §2. `Course` carries a denormalized `userId` so ownership checks don't need a join through `Semester` on every read.
+- Repository layer (`src/server/repositories/`): one file per entity, every query scoped by ownership — `Assignment`/`Exam` prove ownership through `course.userId` since they have no direct `userId` of their own.
+- Service layer (`src/server/services/`): business rules live here — e.g. `SemesterService` enforces "only one active semester at a time."
+- Full REST CRUD (`GET`/`POST` on the collection, `GET`/`PATCH`/`DELETE` on `/:id`) for all five resources, each re-validating the session server-side via `requireUserId()` and validating input with the shared Zod schemas in `src/lib/schemas/academic.schema.ts`.
+- Seed script extended with a sample semester, two courses, an assignment, an exam, and a study session — enough to exercise every new endpoint immediately.
+- `framer-motion` added as a dependency (unused until Phase 3 builds real screens) per the motion decision in §7.
+
+No UI reads these endpoints yet — that's Phase 3, next.
+

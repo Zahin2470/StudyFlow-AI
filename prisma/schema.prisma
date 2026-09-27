@@ -38,8 +38,131 @@ model User {
   accounts       Account[]
   sessions       Session[]
 
+  semesters      Semester[]
+  courses        Course[]
+  studySessions  StudySession[]
+
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Phase 2: academic data model. Course carries a denormalized `userId`
+// alongside its `semesterId` — every course/assignment/exam query in the
+// repositories filters on it directly instead of joining up through
+// Semester on every read, which matters once a student has several
+// semesters of history (see ARCHITECTURE.md §9 scalability notes).
+// ---------------------------------------------------------------------------
+
+model Semester {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String   // e.g. "Fall 2026"
+  startDate DateTime
+  endDate   DateTime
+  isActive  Boolean  @default(false)
+
+  courses   Course[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Course {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  semesterId String
+  semester   Semester @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+
+  code       String   // e.g. "CSE420"
+  name       String
+  instructor String?
+  credits    Float
+  color      String   @default("#3454D1")
+
+  assignments   Assignment[]
+  exams         Exam[]
+  studySessions StudySession[]
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId])
+  @@index([semesterId])
+}
+
+enum AssignmentStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  SUBMITTED
+  GRADED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model Assignment {
+  id          String           @id @default(cuid())
+  courseId    String
+  course      Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  title       String
+  description String?          @db.Text
+  dueDate     DateTime
+  status      AssignmentStatus @default(NOT_STARTED)
+  priority    Priority         @default(MEDIUM)
+  weight      Float?           // % of final grade — used by GPA phase (6), optional here
+
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([courseId])
+  @@index([dueDate])
+}
+
+model Exam {
+  id        String   @id @default(cuid())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  title     String
+  examDate  DateTime
+  location  String?
+  notes     String?  @db.Text
+  weight    Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId])
+  @@index([examDate])
+}
+
+model StudySession {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId          String?  // optional — a session doesn't have to be tied to one course
+  course            Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+
+  title             String?
+  scheduledStart    DateTime
+  scheduledEnd      DateTime
+  completed         Boolean  @default(false)
+  actualDurationMin Int?
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([userId])
+  @@index([scheduledStart])
 }
 
 // Standard Auth.js (NextAuth) adapter models below.
