@@ -1,18 +1,29 @@
 import { auth } from "@/server/auth";
 import { redirect } from "next/navigation";
+import { Sidebar } from "@/components/app/sidebar";
+import { MobileNav } from "@/components/app/mobile-nav";
+import { UserMenu } from "@/components/app/user-menu";
 
-// Minimal authenticated shell for Phase 1 — just proves the session is real.
-// Sidebar/header chrome and dashboard widgets are Phase 3 (see ARCHITECTURE.md §12).
+// Authenticated shell: sidebar (desktop) + bottom nav (mobile) + header with
+// the account menu. Individual pages render their own PageHeader for the
+// title/actions — this layout only owns the chrome that's constant across
+// every authenticated route.
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-paper">
-      <header className="border-b border-slate-light bg-white px-6 py-4">
-        <span className="font-display text-lg font-semibold text-ink">StudyFlow</span>
-      </header>
-      <main className="mx-auto max-w-5xl px-6 py-10">{children}</main>
+    <div className="flex min-h-screen bg-paper">
+      <Sidebar />
+      <div className="flex flex-1 flex-col">
+        <header className="flex items-center justify-end border-b border-slate-light bg-white px-6 py-3 lg:justify-end">
+          <UserMenu name={session.user.name ?? "Student"} />
+        </header>
+        <main className="flex-1 px-6 py-8 pb-24 lg:pb-8">
+          <div className="mx-auto max-w-5xl">{children}</div>
+        </main>
+      </div>
+      <MobileNav />
     </div>
   );
 }

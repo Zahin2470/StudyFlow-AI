@@ -175,3 +175,14 @@ Nothing in Phases 2–11 is stubbed with fake data per section 70 — those scre
 
 No UI reads these endpoints yet — that's Phase 3, next.
 
+## 14. Phase 3 — Delivered
+
+- **App shell**: sidebar (desktop) + bottom nav (mobile) showing the full planned nav, with unbuilt sections tagged "Soon" and non-clickable rather than linking to a 404 (anti-pattern §70). Account menu with real sign-out.
+- **Dashboard**: stat cards, "Today's Focus" (assignments + exams due in the next 14 days, real data), and an assignment-status donut chart — all computed from live Prisma queries, nothing hardcoded. GPA and AI insight cards are absent on purpose; they don't exist until Phases 6/7.
+- **Courses**: semester-gated (creating a semester is required before a course can exist, matching the data model in §2), course grid with add/edit/delete, color-coded per course.
+- **Assignments**: filterable by course, animated complete-toggle, overdue highlighting, add/edit/delete — all backed by the Phase 2 API.
+- **Motion**: Framer Motion is now actually in use — staggered card/row entrances, an animated modal, an animated checkmark on task completion — following the "a few signature moments, not a fade on everything" principle from §7.
+
+Exams, Study Planner, Calendar, Notes, Documents, Analytics, Study Groups, and the AI Assistant remain "Soon" in the sidebar — they're Phases 4 onward.
+
+
