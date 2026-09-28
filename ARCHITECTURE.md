@@ -185,4 +185,15 @@ No UI reads these endpoints yet — that's Phase 3, next.
 
 Exams, Study Planner, Calendar, Notes, Documents, Analytics, Study Groups, and the AI Assistant remain "Soon" in the sidebar — they're Phases 4 onward.
 
+## 15. Phase 4 — Delivered
+
+- **Exams**: list view with a days-away badge, weight, location, add/edit/delete — same CRUD pattern as Assignments, backed by the existing Phase 2 API.
+- **Calendar**: a real month grid (built on `date-fns`, no external calendar library) that merges assignments, exams, and study sessions into one view; clicking a day shows its items in a detail panel. Dots are color-coded by course.
+- **Study Planner**: an agenda of scheduled study sessions grouped by day, with a schedule-ahead form and an animated complete toggle.
+- **Study Timer**: a genuinely functional countdown timer (25/45/60 min presets) with an animated progress ring — stopping or finishing it offers to log the actual elapsed time as a real `StudySession` row (not a decorative widget; it produces real data future phases can use).
+- Sidebar updated: Exams, Calendar, and Study Planner move from "Soon" to live links; middleware extended to protect the three new route groups.
+
+Notes, Documents, Analytics, Study Groups, and the AI Assistant remain "Soon" — Phases 5 onward.
+
+
 
