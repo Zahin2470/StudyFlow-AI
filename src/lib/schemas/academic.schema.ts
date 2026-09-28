@@ -61,3 +61,18 @@ export const studySessionSchema = z
     path: ["scheduledEnd"],
   });
 export type StudySessionInput = z.infer<typeof studySessionSchema>;
+
+export const noteSchema = z.object({
+  courseId: z.string().min(1, "Select a course"),
+  title: z.string().min(1, "Enter a title").max(160),
+  content: z.string().max(20000).default(""),
+});
+export type NoteInput = z.infer<typeof noteSchema>;
+
+// File itself is validated separately (size/type) in the upload route since
+// it arrives via multipart form-data, not JSON — this covers the metadata.
+export const documentMetaSchema = z.object({
+  courseId: z.string().min(1, "Select a course"),
+  title: z.string().min(1, "Enter a title").max(160),
+});
+export type DocumentMetaInput = z.infer<typeof documentMetaSchema>;

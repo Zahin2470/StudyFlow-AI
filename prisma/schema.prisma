@@ -87,6 +87,8 @@ model Course {
   assignments   Assignment[]
   exams         Exam[]
   studySessions StudySession[]
+  notes         Note[]
+  documents     Document[]
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -163,6 +165,44 @@ model StudySession {
 
   @@index([userId])
   @@index([scheduledStart])
+}
+
+// ---------------------------------------------------------------------------
+// Phase 5: Notes and Documents. Document.storageKey lets the storage
+// adapter delete the underlying file later without parsing the URL — see
+// ARCHITECTURE.md §16 for the storage-provider abstraction (local disk now,
+// swappable for S3/Supabase later, same pattern as the AI provider in §5).
+// ---------------------------------------------------------------------------
+
+model Note {
+  id        String   @id @default(cuid())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  title     String
+  content   String   @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId])
+}
+
+model Document {
+  id         String   @id @default(cuid())
+  courseId   String
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  title      String
+  fileUrl    String
+  storageKey String   // opaque key the storage adapter uses to delete the file later
+  fileType   String
+  fileSize   Int      // bytes
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([courseId])
 }
 
 // Standard Auth.js (NextAuth) adapter models below.

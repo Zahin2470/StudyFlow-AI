@@ -195,5 +195,17 @@ Exams, Study Planner, Calendar, Notes, Documents, Analytics, Study Groups, and t
 
 Notes, Documents, Analytics, Study Groups, and the AI Assistant remain "Soon" — Phases 5 onward.
 
+## 16. Phase 5 — Delivered
+
+- **Schema**: `Note` and `Document`, both belonging to a `Course` (matching §2's ER model). `Document.storageKey` is an opaque handle the storage adapter uses to delete the underlying file later, independent of the public URL.
+- **Storage abstraction**: a `StorageProvider` interface (same pattern as the AI provider in §5) with a real, working `LocalStorageProvider` — files save to `/public/uploads/<userId>/...` and are served directly, so uploads work today with zero cloud credentials. Switching to S3 or Supabase Storage later means writing one adapter file and changing `STORAGE_PROVIDER` in `.env`; nothing else in the app depends on which one is active. Upload is validated server-side for MIME type and a 15MB size cap, and a failed DB write cleans up the file it just wrote so nothing orphans on disk.
+- **Notes**: per-course, plain-text (no rich text editor yet — the brief doesn't require one for MVP), card grid with edit/delete.
+- **Documents**: real multipart upload, download links, delete (which also removes the underlying file via the storage adapter).
+- **Global search**: `/api/search` runs five small ownership-scoped queries (courses, assignments, exams, notes, documents) rather than a raw SQL union, keeping the same per-entity authorization every other route uses. The header's search bar debounces input (250ms) and groups results by type.
+- Sidebar and middleware updated for the two new live sections.
+
+Analytics, Study Groups, and the AI Assistant remain "Soon" — Phases 6 and 7 next.
+
+
 
 
