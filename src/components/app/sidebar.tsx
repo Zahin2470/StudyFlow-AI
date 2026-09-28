@@ -12,6 +12,7 @@ import {
   GraduationCap,
   StickyNote,
   FileText,
+  Award,
   BarChart3,
   Users,
   Sparkles,
@@ -30,7 +31,8 @@ const navItems = [
   { href: "/exams", label: "Exams", icon: GraduationCap, live: true },
   { href: "/notes", label: "Notes", icon: StickyNote, live: true },
   { href: "/documents", label: "Documents", icon: FileText, live: true },
-  { href: "/analytics", label: "Analytics", icon: BarChart3, live: false },
+  { href: "/gpa", label: "GPA & Grades", icon: Award, live: true },
+  { href: "/analytics", label: "Analytics", icon: BarChart3, live: true },
   { href: "/groups", label: "Study Groups", icon: Users, live: false },
   { href: "/assistant", label: "AI Assistant", icon: Sparkles, live: false },
 ];

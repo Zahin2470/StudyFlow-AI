@@ -89,6 +89,7 @@ model Course {
   studySessions StudySession[]
   notes         Note[]
   documents     Document[]
+  gradeEntries  GradeEntry[]
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -125,6 +126,8 @@ model Assignment {
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
 
+  gradeEntries GradeEntry[]
+
   @@index([courseId])
   @@index([dueDate])
 }
@@ -142,6 +145,8 @@ model Exam {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  gradeEntries GradeEntry[]
 
   @@index([courseId])
   @@index([examDate])
@@ -201,6 +206,33 @@ model Document {
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+
+  @@index([courseId])
+}
+
+// ---------------------------------------------------------------------------
+// Phase 6: grading. GradeEntry is the only stored grade data — course
+// percentage, letter grade, GPA points, and semester/cumulative GPA are all
+// computed on read in src/lib/gpa.ts and never persisted, so they can never
+// drift out of sync with the entries behind them (see ARCHITECTURE.md §2).
+// ---------------------------------------------------------------------------
+
+model GradeEntry {
+  id           String      @id @default(cuid())
+  courseId     String
+  course       Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  assignmentId String?
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
+  examId       String?
+  exam         Exam?       @relation(fields: [examId], references: [id], onDelete: SetNull)
+
+  label        String      // e.g. "Midterm", "Homework 3" — free text, not every entry maps to an Assignment/Exam row
+  score        Float
+  maxScore     Float
+  weight       Float       // % this entry counts toward the course grade
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 
   @@index([courseId])
 }

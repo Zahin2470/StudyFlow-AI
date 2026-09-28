@@ -206,6 +206,21 @@ Notes, Documents, Analytics, Study Groups, and the AI Assistant remain "Soon" �
 
 Analytics, Study Groups, and the AI Assistant remain "Soon" — Phases 6 and 7 next.
 
+## 17. Phase 6 — Delivered
+
+- **Schema**: `GradeEntry`, belonging to a Course and optionally linking back to the Assignment or Exam it came from. It is the *only* stored grading data — course percentage, letter grade, GPA points, semester GPA, and cumulative GPA are all computed on read in `src/lib/gpa.ts` and never written to a column, so they can never drift out of sync with the entries behind them (the principle stated back in §2).
+- **GPA math** (`src/lib/gpa.ts`, pure functions, no I/O):
+  - A course's current grade is the weight-normalized average of whatever's graded so far — a course with only 30% of its weight entered still shows an accurate "current grade" instead of assuming zeros for the rest.
+  - Percentage maps to letter grade and 4.0-scale points via a standard US-style band (adjustable in one place if a different scale is ever needed).
+  - Semester and cumulative GPA are credit-weighted averages that **exclude ungraded courses entirely** rather than treating them as 0.0 — an ungraded course shouldn't tank a GPA before any grades exist.
+- **GPA & Grades page**: cumulative GPA, per-semester GPA, and a per-course breakdown with a live progress bar; clicking a course opens its gradebook (add/edit/delete individual grade entries).
+- **Analytics page**: three charts built entirely from real rows — weekly study minutes (from `StudySession`, falling back to `scheduledEnd − scheduledStart` when `actualDurationMin` wasn't logged), GPA trend across semesters, and assignment completion rate by course. No chart renders if there's no underlying data yet; it says so instead of drawing an empty or fake chart.
+- **Dashboard**: gained a real GPA stat card using the same `GradeService.getGpaBreakdown` the GPA page uses — one source of truth, not a duplicated calculation.
+- Seed data extended with a few graded items so GPA/Analytics have something to show immediately after seeding.
+
+Study Groups and the AI Assistant remain "Soon" — Phase 7 (AI) is next.
+
+
 
 
 

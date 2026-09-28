@@ -76,3 +76,19 @@ export const documentMetaSchema = z.object({
   title: z.string().min(1, "Enter a title").max(160),
 });
 export type DocumentMetaInput = z.infer<typeof documentMetaSchema>;
+
+export const gradeEntrySchema = z
+  .object({
+    courseId: z.string().min(1, "Select a course"),
+    label: z.string().min(1, "Enter a label").max(120),
+    score: z.coerce.number().min(0),
+    maxScore: z.coerce.number().positive("Must be greater than 0"),
+    weight: z.coerce.number().min(0).max(100),
+    assignmentId: z.string().optional(),
+    examId: z.string().optional(),
+  })
+  .refine((data) => data.score <= data.maxScore, {
+    message: "Score can't exceed the max score",
+    path: ["score"],
+  });
+export type GradeEntryInput = z.infer<typeof gradeEntrySchema>;

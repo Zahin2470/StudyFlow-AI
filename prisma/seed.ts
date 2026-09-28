@@ -99,7 +99,15 @@ async function main() {
     },
   });
 
-  console.log("Seeded demo@studyflow.ai / Password123 with a sample semester, 2 courses, an assignment set, an exam, and a study session.");
+  await prisma.gradeEntry.createMany({
+    data: [
+      { courseId: database.id, label: "Homework 1", score: 18, maxScore: 20, weight: 10 },
+      { courseId: database.id, label: "Quiz 1", score: 8, maxScore: 10, weight: 5 },
+      { courseId: algorithms.id, label: "Problem Set 1", score: 27, maxScore: 30, weight: 15 },
+    ],
+  });
+
+  console.log("Seeded demo@studyflow.ai / Password123 with a sample semester, 2 courses, an assignment set, an exam, a study session, and grade entries.");
 }
 
 main()

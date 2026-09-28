@@ -15,7 +15,9 @@ export default auth((req) => {
     req.nextUrl.pathname.startsWith("/calendar") ||
     req.nextUrl.pathname.startsWith("/planner") ||
     req.nextUrl.pathname.startsWith("/notes") ||
-    req.nextUrl.pathname.startsWith("/documents");
+    req.nextUrl.pathname.startsWith("/documents") ||
+    req.nextUrl.pathname.startsWith("/gpa") ||
+    req.nextUrl.pathname.startsWith("/analytics");
 
   if (isAppRoute && !isLoggedIn) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
@@ -33,5 +35,7 @@ export const config = {
     "/planner/:path*",
     "/notes/:path*",
     "/documents/:path*",
+    "/gpa/:path*",
+    "/analytics/:path*",
   ],
 };
