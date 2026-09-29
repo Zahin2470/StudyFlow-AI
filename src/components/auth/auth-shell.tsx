@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function AuthShell({
   title,
@@ -12,7 +13,10 @@ export function AuthShell({
   footer?: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-paper px-6">
+    <div className="relative flex min-h-screen items-center justify-center bg-paper px-6">
+      <div className="absolute right-4 top-4">
+        <ThemeToggle />
+      </div>
       <div className="w-full max-w-sm">
         <Link href="/" className="mb-8 block text-center font-display text-xl font-semibold text-ink">
           StudyFlow

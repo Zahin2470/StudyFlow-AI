@@ -38,9 +38,9 @@ export function AnalyticsClient({ weeklyMinutes, gpaTrend, completion }: Props) 
             <div className="h-56">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={weeklyMinutes}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#E4E6EA" vertical={false} />
-                  <XAxis dataKey="week" tick={{ fontSize: 11, fill: "#A9AFBC" }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 11, fill: "#A9AFBC" }} axisLine={false} tickLine={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgb(var(--color-slate-light))" vertical={false} />
+                  <XAxis dataKey="week" tick={{ fontSize: 11, fill: "rgb(var(--color-slate))" }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 11, fill: "rgb(var(--color-slate))" }} axisLine={false} tickLine={false} />
                   <Tooltip />
                   <Bar dataKey="minutes" fill="#3454D1" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -54,9 +54,9 @@ export function AnalyticsClient({ weeklyMinutes, gpaTrend, completion }: Props) 
               <div className="h-52">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={gpaTrend}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E4E6EA" vertical={false} />
-                    <XAxis dataKey="semester" tick={{ fontSize: 11, fill: "#A9AFBC" }} axisLine={false} tickLine={false} />
-                    <YAxis domain={[0, 4]} tick={{ fontSize: 11, fill: "#A9AFBC" }} axisLine={false} tickLine={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgb(var(--color-slate-light))" vertical={false} />
+                    <XAxis dataKey="semester" tick={{ fontSize: 11, fill: "rgb(var(--color-slate))" }} axisLine={false} tickLine={false} />
+                    <YAxis domain={[0, 4]} tick={{ fontSize: 11, fill: "rgb(var(--color-slate))" }} axisLine={false} tickLine={false} />
                     <Tooltip />
                     <Line type="monotone" dataKey="gpa" stroke="#5B8266" strokeWidth={2} dot={{ r: 4 }} />
                   </LineChart>
@@ -71,9 +71,9 @@ export function AnalyticsClient({ weeklyMinutes, gpaTrend, completion }: Props) 
               <div className="h-52">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={completion} layout="vertical">
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E4E6EA" horizontal={false} />
-                    <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: "#A9AFBC" }} axisLine={false} tickLine={false} />
-                    <YAxis dataKey="course" type="category" tick={{ fontSize: 11, fill: "#A9AFBC" }} axisLine={false} tickLine={false} width={60} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgb(var(--color-slate-light))" horizontal={false} />
+                    <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: "rgb(var(--color-slate))" }} axisLine={false} tickLine={false} />
+                    <YAxis dataKey="course" type="category" tick={{ fontSize: 11, fill: "rgb(var(--color-slate))" }} axisLine={false} tickLine={false} width={60} />
                     <Tooltip />
                     <Bar dataKey="completionRate" fill="#E8A33D" radius={[0, 4, 4, 0]} />
                   </BarChart>

@@ -90,7 +90,7 @@ export function FocusTimer({ courses }: { courses: CourseOption[] }) {
       <div className="flex flex-col items-center">
         <div className="relative h-36 w-36">
           <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
-            <circle cx="60" cy="60" r={RADIUS} fill="none" stroke="#E4E6EA" strokeWidth="8" />
+            <circle cx="60" cy="60" r={RADIUS} fill="none" stroke="rgb(var(--color-slate-light))" strokeWidth="8" />
             <motion.circle
               cx="60"
               cy="60"

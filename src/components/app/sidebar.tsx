@@ -41,7 +41,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-64 shrink-0 border-r border-slate-light bg-white lg:flex lg:flex-col">
+    <aside className="hidden w-64 shrink-0 border-r border-slate-light bg-surface lg:flex lg:flex-col">
       <div className="px-6 py-6">
         <Link href="/dashboard" className="font-display text-xl font-semibold text-ink">
           StudyFlow

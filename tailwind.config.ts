@@ -1,25 +1,30 @@
 import type { Config } from "tailwindcss";
 
-// Design tokens — see ARCHITECTURE.md section 7 for the reasoning behind
-// this specific palette/type choice (deliberately not the default
-// cream+terracotta or all-black+neon AI-generated look).
+// Every color resolves from a CSS variable (defined in globals.css for
+// :root and .dark) via the rgb(var(...) / <alpha-value>) pattern, so
+// dark mode is a single class toggle on <html> that cascades through
+// every component using these tokens — not a per-component dark: variant
+// scattered across 80 files. See ARCHITECTURE.md §20.
+const withOpacity = (variable: string) => `rgb(var(${variable}) / <alpha-value>)`;
+
 const config: Config = {
   darkMode: "class",
   content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        ink: "#14213C",
-        paper: "#F7F7F5",
+        ink: withOpacity("--color-ink"),
+        paper: withOpacity("--color-paper"),
+        surface: withOpacity("--color-surface"),
         indigo: {
-          DEFAULT: "#3454D1",
-          hover: "#2A44AD",
+          DEFAULT: withOpacity("--color-indigo"),
+          hover: withOpacity("--color-indigo-hover"),
         },
-        amber: "#E8A33D",
-        sage: "#5B8266",
+        amber: withOpacity("--color-amber"),
+        sage: withOpacity("--color-sage"),
         slate: {
-          DEFAULT: "#A9AFBC",
-          light: "#E4E6EA",
+          DEFAULT: withOpacity("--color-slate"),
+          light: withOpacity("--color-slate-light"),
         },
       },
       fontFamily: {

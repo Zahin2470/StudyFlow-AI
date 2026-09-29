@@ -241,6 +241,20 @@ Only Study Groups remains "Soon" — every other planned MVP section now exists.
 
 Every section from the original MVP scope (§ "Defined MVP scope" in project notes) now exists and is backed by real data end to end.
 
+## 20. Design Polish Pass — Dark Mode + Landing Page
+
+Two things were addressed together because they're the same underlying fix: the landing page read as generic, and there was no dark mode.
+
+- **Theme-aware tokens, not per-component dark: classes.** Every color in `tailwind.config.ts` now resolves from a CSS variable (`rgb(var(--color-x) / <alpha-value>)`), defined once for `:root` and once for `.dark` in `globals.css`. Because `card-flat`, `card-elevated`, `btn-primary`, `btn-secondary`, and `input-field` all reference these tokens, dark mode reaches every screen built since Phase 1 through one class toggle on `<html>` — not a per-file retrofit. `next-themes` handles persistence and system-preference detection; `ThemeToggle` is a small animated sun/moon button now in the marketing nav, the auth shell, and the app header.
+- **`bg-white` audited out.** A few components (sidebar, header, mobile nav, modal) had the surface color hardcoded instead of tokenized; those now use the new `surface` token so they invert correctly. The modal's dark scrim was fixed to `bg-black/40` rather than `bg-ink/30` — `ink` flips to a *light* color in dark mode, which would have turned a dimming overlay into a lightening one.
+- **Chart colors** (grid lines, axis ticks) in Analytics and the Study Timer's track ring were switched from hardcoded light-mode hex to the same CSS variables, so they stay legible in both themes. Status/priority badge colors and course accent swatches were left as fixed brand colors on purpose — they're semantic, not surface colors.
+- **Landing page rebuilt** around the frontend-design principle of spending boldness in one place rather than animating every section:
+  - One ambient, non-interactive moment: two low-opacity blurred fields in the existing indigo/amber tokens, drifting slowly behind the hero only.
+  - One interactive moment: a stylized preview of the real dashboard (same card language, same tokens — not a generic browser-chrome mockup) that tilts toward the cursor.
+  - Everything else — the feature grid, footer — is static by design; the brief's own anti-pattern list calls out fade-in-on-every-section as a generic AI-design tell.
+  - Nav is now sticky with backdrop blur, and includes the theme toggle.
+
+
 
 
 

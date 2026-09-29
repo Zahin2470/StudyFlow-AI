@@ -57,7 +57,7 @@ export function GroupDetailClient({
       <div className="mb-6 flex flex-wrap items-center gap-4">
         <button
           onClick={copyCode}
-          className="flex items-center gap-2 rounded-card border border-slate-light bg-white px-3 py-1.5 text-sm text-ink/70 hover:bg-paper"
+          className="flex items-center gap-2 rounded-card border border-slate-light bg-surface px-3 py-1.5 text-sm text-ink/70 hover:bg-paper"
         >
           {copied ? <Check size={14} className="text-sage" /> : <Copy size={14} />}
           Invite code: <span className="font-mono font-medium text-ink">{group.inviteCode}</span>
