@@ -33,7 +33,7 @@ const navItems = [
   { href: "/documents", label: "Documents", icon: FileText, live: true },
   { href: "/gpa", label: "GPA & Grades", icon: Award, live: true },
   { href: "/analytics", label: "Analytics", icon: BarChart3, live: true },
-  { href: "/groups", label: "Study Groups", icon: Users, live: false },
+  { href: "/groups", label: "Study Groups", icon: Users, live: true },
   { href: "/assistant", label: "AI Assistant", icon: Sparkles, live: true },
 ];
 

@@ -107,7 +107,25 @@ async function main() {
     ],
   });
 
-  console.log("Seeded demo@studyflow.ai / Password123 with a sample semester, 2 courses, an assignment set, an exam, a study session, and grade entries.");
+  const group = await prisma.studyGroup.create({
+    data: {
+      name: "CSE311 Study Squad",
+      description: "Working through database homework together.",
+      ownerId: user.id,
+      inviteCode: "demo1234",
+    },
+  });
+  await prisma.groupMembership.create({
+    data: { groupId: group.id, userId: user.id, role: "OWNER" },
+  });
+  await prisma.groupMessage.create({
+    data: { groupId: group.id, userId: user.id, content: "Welcome! Let's use this to coordinate on ER diagrams." },
+  });
+  await prisma.groupSharedTask.create({
+    data: { groupId: group.id, title: "Compare ER diagram drafts", createdById: user.id },
+  });
+
+  console.log("Seeded demo@studyflow.ai / Password123 with a sample semester, 2 courses, an assignment set, an exam, a study session, grade entries, and a study group (invite code: demo1234).");
 }
 
 main()

@@ -230,6 +230,18 @@ Study Groups and the AI Assistant remain "Soon" — Phase 7 (AI) is next.
 
 Only Study Groups remains "Soon" — every other planned MVP section now exists.
 
+## 19. Phase 8 — Delivered
+
+- **Schema**: `StudyGroup`, `GroupMembership`, `GroupMessage`, `GroupSharedTask`. Unlike every model before this phase, these are shared across users — access is governed by "is this user a member?" (`GroupMembership`), not single-owner like Course/Assignment/etc. `StudyGroupService` re-checks membership on every single method, including message and task reads, not just at the group-detail level.
+- **Groups**: create (owner + membership created together in one transaction, so a group can never exist without its owner as a member), join by invite code, leave (owners can't leave — they delete or would need to transfer ownership, a feature not built yet), owner-only delete.
+- **Group chat**: real messages, persisted, member-scoped. No websocket infrastructure exists in this build, so it's honestly a 5-second poll rather than true real-time — noted in the code as the one thing to swap for a real subscription (Pusher, a WebSocket route, Server-Sent Events) if it matters later; nothing else would need to change.
+- **Shared tasks**: simple group-visible checklist, any member can add/complete/delete.
+- Sidebar and middleware updated — **Study Groups is the last section**, so every nav item is now live and the "Soon" styling path in the sidebar is unused (left in place rather than removed, in case a future section gets added the same way).
+- Seed data extended with a sample group, message, and shared task (invite code `demo1234`).
+
+Every section from the original MVP scope (§ "Defined MVP scope" in project notes) now exists and is backed by real data end to end.
+
+
 
 
 

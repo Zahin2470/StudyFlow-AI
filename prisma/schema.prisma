@@ -42,6 +42,11 @@ model User {
   courses        Course[]
   studySessions  StudySession[]
 
+  ownedGroups      StudyGroup[]      @relation("OwnedGroups")
+  groupMemberships GroupMembership[]
+  groupMessages    GroupMessage[]
+  createdGroupTasks GroupSharedTask[]
+
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 }
@@ -235,6 +240,69 @@ model GradeEntry {
   updatedAt    DateTime    @updatedAt
 
   @@index([courseId])
+}
+
+// ---------------------------------------------------------------------------
+// Phase 8: Study Groups. Unlike everything above, these rows are shared
+// across multiple users — access is "is this user a member?" via
+// GroupMembership, not single-owner like Course/Assignment/etc.
+// ---------------------------------------------------------------------------
+
+model StudyGroup {
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  ownerId     String
+  owner       User              @relation("OwnedGroups", fields: [ownerId], references: [id], onDelete: Cascade)
+  inviteCode  String            @unique
+
+  memberships GroupMembership[]
+  messages    GroupMessage[]
+  tasks       GroupSharedTask[]
+
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model GroupMembership {
+  id       String     @id @default(cuid())
+  groupId  String
+  group    StudyGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role     String     @default("MEMBER") // "OWNER" | "MEMBER" — OWNER also exists as StudyGroup.ownerId; kept here too so member-list queries don't need a second lookup
+  joinedAt DateTime   @default(now())
+
+  @@unique([groupId, userId])
+  @@index([userId])
+}
+
+model GroupMessage {
+  id        String     @id @default(cuid())
+  groupId   String
+  group     StudyGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String     @db.Text
+  createdAt DateTime   @default(now())
+
+  @@index([groupId, createdAt])
+}
+
+model GroupSharedTask {
+  id          String     @id @default(cuid())
+  groupId     String
+  group       StudyGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  title       String
+  dueDate     DateTime?
+  completed   Boolean    @default(false)
+  createdById String
+  createdBy   User       @relation(fields: [createdById], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([groupId])
 }
 
 // Standard Auth.js (NextAuth) adapter models below.

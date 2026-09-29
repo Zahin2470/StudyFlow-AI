@@ -92,3 +92,24 @@ export const gradeEntrySchema = z
     path: ["score"],
   });
 export type GradeEntryInput = z.infer<typeof gradeEntrySchema>;
+
+export const studyGroupSchema = z.object({
+  name: z.string().min(2, "Name is too short").max(80),
+  description: z.string().max(500).optional(),
+});
+export type StudyGroupInput = z.infer<typeof studyGroupSchema>;
+
+export const joinGroupSchema = z.object({
+  inviteCode: z.string().min(4, "Enter a valid invite code"),
+});
+
+export const groupMessageSchema = z.object({
+  content: z.string().min(1, "Message can't be empty").max(2000),
+});
+export type GroupMessageInput = z.infer<typeof groupMessageSchema>;
+
+export const groupTaskSchema = z.object({
+  title: z.string().min(1, "Enter a title").max(160),
+  dueDate: z.coerce.date().optional(),
+});
+export type GroupTaskInput = z.infer<typeof groupTaskSchema>;
