@@ -31,7 +31,8 @@ Visit `http://localhost:3000`.
 - Register (`/register`) → creates a user, issues an email-verify token
 - Login (`/login`) → email/password (Credentials) or Google OAuth
 - Forgot/reset password flow
-- `/dashboard` is a protected route — try visiting it logged out, you'll be redirected to `/login`
+- Dashboard, Courses, Assignments, Exams, Calendar, Study Planner + Timer, Notes, Documents, GPA & Grades, Analytics — all backed by real data, no fake/hardcoded content anywhere
+- AI Assistant (chat + study-plan generation) — works once `AI_PROVIDER`/`AI_API_KEY` are set in `.env`; shows a plain "not configured" state otherwise, the rest of the app is unaffected either way
 
 ## Environment variables
 

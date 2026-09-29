@@ -34,7 +34,7 @@ const navItems = [
   { href: "/gpa", label: "GPA & Grades", icon: Award, live: true },
   { href: "/analytics", label: "Analytics", icon: BarChart3, live: true },
   { href: "/groups", label: "Study Groups", icon: Users, live: false },
-  { href: "/assistant", label: "AI Assistant", icon: Sparkles, live: false },
+  { href: "/assistant", label: "AI Assistant", icon: Sparkles, live: true },
 ];
 
 export function Sidebar() {

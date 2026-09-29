@@ -220,6 +220,17 @@ Analytics, Study Groups, and the AI Assistant remain "Soon" — Phases 6 and 7 n
 
 Study Groups and the AI Assistant remain "Soon" — Phase 7 (AI) is next.
 
+## 18. Phase 7 — Delivered
+
+- **Provider abstraction realized**: `AiProvider` interface with three working adapters — OpenAI, Gemini, and Grok (xAI, OpenAI-compatible) — chosen at runtime via `AI_PROVIDER`. I could not test these against live APIs in this build environment (no network access to AI providers here), so treat the exact request/response parsing as best-effort against each provider's documented API shape at the time of writing — worth a quick smoke test against your real key before relying on it. If a provider updates its API shape, only that one adapter file needs to change.
+- **Real context, not generic advice**: every chat message and study-plan request is grounded in the student's actual courses, upcoming assignments/exams (next 14 days), all fetched fresh per request. The context is appended to a **fixed** system prompt as a clearly delimited data block — a student's own message content is never concatenated into the instruction portion, which is the prompt-injection mitigation named back in §8.
+- **Validated AI output, for real**: `generateStudyPlan` requires the model to return JSON matching `studyPlanSuggestionSchema`; a non-matching response gets one retry with the same strict prompt, then a plain error — nothing malformed ever reaches the UI or database. Returned `courseId`s are also filtered against the student's actual courses server-side, even though the schema already passed, because a schema-valid response could still reference a course that isn't theirs.
+- **Human-in-the-loop by design**: the AI never writes to the database directly. `/api/ai/study-plan/generate` only returns suggestions; a student checks which ones they want and `/api/ai/study-plan/approve` creates them through the exact same `StudySessionService` the manual planner form uses.
+- **Graceful when unconfigured**: with no `AI_API_KEY` set, `AiService.available` is `false` and the UI shows a plain "add your API key" state instead of erroring — every other phase of the app works with zero AI configuration.
+
+Only Study Groups remains "Soon" — every other planned MVP section now exists.
+
+
 
 
 
