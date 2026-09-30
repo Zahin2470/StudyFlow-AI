@@ -2,6 +2,7 @@ import { BookOpen, CalendarClock, Sparkles } from "lucide-react";
 import { MarketingNav } from "@/components/marketing/marketing-nav";
 import { AmbientGlow } from "@/components/marketing/ambient-glow";
 import { DashboardPreview } from "@/components/marketing/dashboard-preview";
+import { ExploreDemoButton } from "@/components/marketing/explore-demo-button";
 
 const FEATURES = [
   {
@@ -43,9 +44,7 @@ export default function LandingPage() {
             <a href="/register" className="btn-primary px-6 py-3 text-base">
               Get Started Free
             </a>
-            <a href="/login" className="btn-secondary px-6 py-3 text-base">
-              Explore Demo
-            </a>
+            <ExploreDemoButton className="btn-secondary px-6 py-3 text-base" />
           </div>
         </div>
 

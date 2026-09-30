@@ -1,30 +1,41 @@
 <div align="center">
 
-# 📚 StudyFlow AI
+<img
+src="https://capsule-render.vercel.app/api?type=waving&height=180&color=0:0F172A,50:0EA5E9,100:14B8A6&text=StudyFlow%20AI&fontSize=52&fontColor=FFFFFF&font=Inter&fontAlignY=52&animation=fadeIn"
+width="100%"
+/>
 
-### Your Academic Life, Organized.
+<p>
+  <img
+    src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=18&duration=3000&pause=1000&color=14B8A6&center=true&vCenter=true&width=600&lines=Your+Academic+Life%2C+Finally+in+One+Flow.;Plan+Smarter.+Study+Better.+Stay+Ahead."
+    alt="Tagline"
+  />
+</p>
 
-*A full-stack academic operating system for students — courses, assignments, exams, study planning, grades, and an AI assistant that actually understands how they connect.*
+A full-stack academic operating system for students - courses, assignments,
+exams, study planning, grades, and an AI assistant that actually understands
+how they connect.
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Prisma](https://img.shields.io/badge/Prisma-5-2D3748?style=flat-square&logo=prisma&logoColor=white)](https://www.prisma.io/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Auth.js](https://img.shields.io/badge/Auth.js-v5-black?style=flat-square)](https://authjs.dev/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](./LICENSE)
-
-[Features](#-features) • [Tech Stack](#️-tech-stack) • [Getting Started](#-getting-started) • [Project Structure](#-project-structure) • [Roadmap](#-roadmap)
+[![Next.js](https://img.shields.io/badge/Next.js-14-000000?logo=next.js\&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript\&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-06B6D4?logo=tailwindcss\&logoColor=white)](https://tailwindcss.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-5-2D3748?logo=prisma\&logoColor=white)](https://www.prisma.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-4169E1?logo=postgresql\&logoColor=white)](https://www.postgresql.org/)
+[![Auth.js](https://img.shields.io/badge/Auth.js-v5-000000?logo=auth.js\&logoColor=white)](https://authjs.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 </div>
 
 ---
+
 
 ## ✨ Overview
 
 StudyFlow AI brings everything a student juggles — courses, deadlines, exams, study time, grades, notes, files, and group work — into one connected system, instead of five disconnected apps. Every screen is backed by real data with no hardcoded placeholders; where a feature isn't built yet, it's honestly marked as such rather than faked.
 
 Built end-to-end in eight phases, each with its own architectural reasoning documented in [`ARCHITECTURE.md`](./ARCHITECTURE.md).
+
+> 🚀 **Try it without signing up** — the landing page's "Explore Demo" button (and the clickable dashboard preview) signs you straight into a live seeded account. It's a real, fully-working login — not a mockup. See [`ARCHITECTURE.md §21`](./ARCHITECTURE.md) for how it works and its one honest tradeoff (shared demo data).
 
 ## 🎯 Features
 
@@ -39,10 +50,9 @@ Built end-to-end in eight phases, each with its own architectural reasoning docu
 - **Calendar** — unified month view of everything due
 - **GPA & Grades** — calculated live from entries, never hand-typed
 
-### 📅 Study Tools
-- **Study Planner** — schedule sessions ahead of time
-- **Study Timer** — animated focus timer that logs real sessions
-- **Analytics** — weekly study time, GPA trend, completion rates
+### 🎨 Experience
+- **Dark & light mode** — system-aware, persisted, reaches every screen through one token system
+- **Motion done deliberately** — one signature moment per surface (an interactive dashboard preview on the landing page, a real animated study timer), not motion sprinkled on everything
 
 </td>
 <td valign="top" width="50%">
@@ -52,9 +62,10 @@ Built end-to-end in eight phases, each with its own architectural reasoning docu
 - **Documents** — real file upload/download, storage-provider agnostic
 - **Global Search** — across courses, assignments, exams, notes, files
 
-### 🎨 Experience
-- **Dark & light mode** — system-aware, persisted, reaches every screen through one token system
-- **Motion done deliberately** — one signature moment per surface (an interactive dashboard preview on the landing page, a real animated study timer), not motion sprinkled on everything
+### 📅 Study Tools
+- **Study Planner** — schedule sessions ahead of time
+- **Study Timer** — animated focus timer that logs real sessions
+- **Analytics** — weekly study time, GPA trend, completion rates
 
 ### 🤝 Collaboration & AI
 - **Study Groups** — invite-code join, group chat, shared tasks
@@ -66,17 +77,6 @@ Built end-to-end in eight phases, each with its own architectural reasoning docu
 
 Every one of these is a genuinely working feature, not a mockup — see [`ARCHITECTURE.md`](./ARCHITECTURE.md) for what's real vs. what's intentionally deferred.
 
-## 🖼️ Screenshots
-
-> _Add screenshots or a short demo GIF here once you have a deployed instance — a Dashboard and Study Planner shot make the best first impression._
-
-```
-docs/
-└── screenshots/
-    ├── dashboard.png
-    ├── planner.png
-    └── ai-assistant.png
-```
 
 ## 🛠️ Tech Stack
 
@@ -148,6 +148,7 @@ See [`.env.example`](./.env.example) for the full list. The essentials to get ru
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Optional | Enables Google sign-in |
 | `AI_PROVIDER` / `AI_API_KEY` | Optional | Enables the AI Assistant (`openai`, `gemini`, or `grok`) |
 | `STORAGE_PROVIDER` | Optional | Defaults to `local` — works with zero config |
+| `NEXT_PUBLIC_ENABLE_DEMO` | Optional | Defaults to `true` — set `false` to remove the public "Explore Demo" entry points |
 
 Everything not marked required has a graceful fallback — the app runs fully without AI or Google OAuth configured.
 
@@ -156,24 +157,49 @@ Everything not marked required has a graceful fallback — the app runs fully wi
 ```
 studyflow-ai/
 ├── prisma/
-│   ├── schema.prisma        # full data model — see ARCHITECTURE.md §2
+│   ├── schema.prisma
 │   └── seed.ts
 ├── src/
 │   ├── app/
-│   │   ├── (marketing)/      # public landing page
-│   │   ├── (auth)/           # login, register, password reset
-│   │   ├── (app)/            # authenticated shell — every real feature lives here
-│   │   └── api/              # REST route handlers, one folder per resource
+│   │   ├── (marketing)/              # public landing page, no auth
+│   │   │   └── page.tsx
+│   │   ├── (auth)/                   # login/register/reset — no sidebar shell
+│   │   │   ├── login/page.tsx
+│   │   │   ├── register/page.tsx
+│   │   │   ├── forgot-password/page.tsx
+│   │   │   ├── reset-password/page.tsx
+│   │   │   └── verify-email/page.tsx
+│   │   ├── (app)/                    # authenticated shell (sidebar + header)
+│   │   │   ├── layout.tsx
+│   │   │   ├── dashboard/page.tsx
+│   │   │   ├── courses/...
+│   │   │   ├── assignments/...
+│   │   │   ├── exams/...
+│   │   │   ├── planner/...
+│   │   │   ├── calendar/...
+│   │   │   ├── gpa/...
+│   │   │   ├── notes/...
+│   │   │   ├── documents/...
+│   │   │   ├── groups/...
+│   │   │   ├── analytics/...
+│   │   │   └── assistant/...
+│   │   └── api/
+│   │       ├── auth/[...nextauth]/route.ts
+│   │       ├── courses/route.ts + [id]/route.ts
+│   │       ├── assignments/...
+│   │       └── ai/...
 │   ├── components/
-│   │   ├── ui/                # shared primitives (Modal, Badge, EmptyState...)
-│   │   └── app/                # feature components, one folder per section
+│   │   ├── ui/            # shadcn primitives (button, card, input, dialog...)
+│   │   ├── marketing/
+│   │   ├── auth/
+│   │   └── app/            # sidebar, header, dashboard widgets
 │   ├── server/
-│   │   ├── services/           # business logic
-│   │   ├── repositories/       # Prisma queries, ownership-scoped
-│   │   └── services/{ai,storage}/  # pluggable provider abstractions
-│   ├── lib/                    # Zod schemas, GPA math, shared utils
-│   └── middleware.ts           # route protection
-└── ARCHITECTURE.md            # full design rationale, phase by phase
+│   │   ├── services/       # business logic (AssignmentService, GpaService, AiService)
+│   │   ├── repositories/   # Prisma queries, one per entity — isolates ORM from services
+│   │   └── auth.ts         # NextAuth config
+│   ├── lib/                 # zod schemas, utils, ai-provider abstraction
+│   └── middleware.ts        # route protection + RBAC gate
+└── .env.example
 ```
 
 Full breakdown and the reasoning behind the service/repository split: [`ARCHITECTURE.md §1`](./ARCHITECTURE.md).
@@ -203,8 +229,6 @@ This is currently a solo academic project, but suggestions and issues are welcom
 
 <div align="center">
 
-Built by **Abrar Hossain Zahin** — B.Sc. CSE student & AI/ML researcher, East West University
-
-[Portfolio](https://abrar-hossain-zahin-portfolio.vercel.app)
+Built by **Abrar Hossain Zahin** — B.Sc. CSE student & AI/ML researcher, East West University [Portfolio](https://abrar-hossain-zahin-portfolio.vercel.app)
 
 </div>

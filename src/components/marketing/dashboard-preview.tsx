@@ -1,15 +1,22 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
+import { useRef, useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { CheckCircle2, PlayCircle } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { DEMO_EMAIL, DEMO_PASSWORD } from "@/lib/demo";
+
+const DEMO_ENABLED = process.env.NEXT_PUBLIC_ENABLE_DEMO !== "false";
 
 // The one signature interactive moment on the page (frontend-design skill:
 // "spend your boldness in one place"). A stylized echo of the real
 // dashboard — same tokens, same card language — not a generic browser
-// mockup. Tilts toward the cursor; springs back to a gentle float at rest.
+// mockup. Tilts toward the cursor, and is itself a real entry point into
+// the live demo, not just decoration.
 export function DashboardPreview() {
   const ref = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState(false);
+  const [loading, setLoading] = useState(false);
   const rotateX = useSpring(useMotionValue(0), { stiffness: 150, damping: 20 });
   const rotateY = useSpring(useMotionValue(0), { stiffness: 150, damping: 20 });
 
@@ -25,6 +32,13 @@ export function DashboardPreview() {
   const reset = () => {
     rotateX.set(0);
     rotateY.set(0);
+    setHovered(false);
+  };
+
+  const enterDemo = async () => {
+    if (!DEMO_ENABLED) return;
+    setLoading(true);
+    await signIn("credentials", { email: DEMO_EMAIL, password: DEMO_PASSWORD, callbackUrl: "/dashboard" });
   };
 
   const barHeights = [40, 65, 50, 80, 60, 90, 45];
@@ -33,13 +47,28 @@ export function DashboardPreview() {
     <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
+      onMouseEnter={() => setHovered(true)}
       onMouseLeave={reset}
+      onClick={enterDemo}
+      role="button"
+      aria-label="Explore the live demo"
       style={{ rotateX, rotateY, transformPerspective: 1200 }}
       initial={{ opacity: 0, y: 30, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="card-elevated relative mx-auto w-full max-w-xl p-5"
+      className="card-elevated relative mx-auto w-full max-w-xl cursor-pointer p-5"
     >
+      <motion.div
+        animate={{ opacity: hovered && DEMO_ENABLED ? 1 : 0 }}
+        transition={{ duration: 0.15 }}
+        className="absolute inset-0 z-10 flex items-center justify-center rounded-card bg-ink/60 backdrop-blur-[2px]"
+      >
+        <span className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-ink">
+          <PlayCircle size={16} className="text-indigo" />
+          {loading ? "Loading demo…" : "Click to explore live"}
+        </span>
+      </motion.div>
+
       <div className="mb-4 flex items-center justify-between">
         <div>
           <p className="font-display text-sm font-semibold text-ink">Good to see you, Amara.</p>

@@ -261,3 +261,11 @@ Two things were addressed together because they're the same underlying fix: the 
 
 
 
+
+## 21. Explore Demo — Public, Zero-Friction Access
+
+Landing-page visitors can experience the real app without registering, via two entry points (the "Explore Demo" button and the dashboard preview mockup itself, which is clickable). Both do the same thing: sign the visitor in as the seeded `demo@studyflow.ai` account through the **exact same Credentials flow** `/login` uses — `src/lib/demo.ts` is the single source of truth for that account's identity.
+
+Deliberately not built as a separate read-only mode: a parallel set of stub pages would either be fake (violating §70) or a large duplicate surface to maintain. Reusing the real authenticated app means all 12 feature sections work identically for a demo visitor and a registered user, with zero additional page code.
+
+**The honest tradeoff**: it's one shared account, so concurrent visitors can see and modify each other's changes (add a course, someone else deletes it, etc.). A `DemoBanner` (shown in the app header whenever `isDemoUser(session.user.email)`) states this plainly and points to registration. For a production deploy, the two real options are a nightly reset job (cron truncates and re-seeds the demo user's data) or provisioning a fresh ephemeral account per visitor — neither is built here; `NEXT_PUBLIC_ENABLE_DEMO=false` removes both entry points entirely if the shared-state tradeoff isn't acceptable for a given deployment.
